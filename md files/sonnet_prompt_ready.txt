@@ -1,0 +1,122 @@
+===== PROMPT FOR CLAUDE SONNET (Copy & Paste) =====
+
+You are building a luxury photography portfolio website for LEKHA RATHNAM, an editorial & fine-art photographer.
+
+DESIGN AESTHETIC:
+- Inspired by Readymag editorial sites (full-screen, serif typography, generous whitespace, cinematic imagery)
+- Color palette: Warm earth tones from her work—terracotta, dusty pink, olive, warm gold, deep burgundy, charcoal
+- Typography: Serif headings (Fraunces or Playfair), sans-serif UI (Inter or Sora)
+- Mood: Gallery exhibition, not corporate portfolio. Minimal UI. Images dominate.
+- Dark mode ready: Premium feel in both light/dark
+
+TECHNICAL STACK:
+- Next.js 14+ (App Router), React 18, TypeScript, Tailwind CSS
+- Framer Motion for scroll/hover animations
+- next/image for optimization
+- React Hook Form for contact form
+- Zustand or Context for state (filter, modal)
+
+CORE FEATURES:
+
+1. HOME PAGE
+   - Full-screen immersive hero (image/video background with subtle parallax)
+   - Minimal nav: logo (top-left) + navigation links (top-right, subtle)
+   - Hero text: Just name + subtitle "Editorial & Fine Art Photography"
+   - Scroll prompt (subtle arrow or text)
+
+2. GALLERY / WORK PAGE
+   - Irregular masonry grid layout (varied image sizes, cinematic feel)
+   - Images: Lazy-loaded, staggered fade-in as viewport enters
+   - Hover state: Overlay appears with series name, year, location, "View project" text
+   - Click expands to full-screen lightbox with:
+     * High-res image
+     * Left/right navigation arrows
+     * Series metadata, camera/technique notes
+     * Close button (X)
+   - Optional filter toggle: Filter by series/theme without page reload
+
+3. PROJECT/SERIES PAGES
+   - Dynamic routes: /work/[series-slug]
+   - Full-width cinematic layout
+   - Series intro (serif, editorial style)
+   - 3-5 images in varied layout (2-col, 1-col, full-width mixes)
+   - Behind-the-scenes narrative: Inspiration, process, series statement
+   - Related series cards at bottom
+
+4. ABOUT PAGE
+   - Text-heavy, serif typography
+   - Optional: Small circular/square portrait (tasteful)
+   - Bio emphasizing editorial work, publications, approach
+   - Clients/publications grid or list
+
+5. CONTACT PAGE
+   - Simple form: name, email, inquiry type, message
+   - Accessible, React Hook Form validated
+   - Success state with elegant confirmation
+   - Alternative: Email link + social links
+
+INTERACTION & ANIMATION:
+- Page load: Hero fades in (800ms), nav slides in (200ms), text fades in (400ms)
+- Scroll: Gallery images fade + slide on viewport entry (staggered 100-200ms each)
+- Hover: Gallery items scale 1.02x + overlay fades (300ms)
+- Lightbox: Zoom in from thumbnail (300ms), smooth cross-fade on navigation
+- Smooth scrolling throughout, no jank
+
+PERFORMANCE & UX:
+- Image optimization: WebP + JPEG fallback, responsive srcset, LQIP blur
+- Lazy load gallery images (IntersectionObserver)
+- Mobile-first: Masonry on desktop → 2-col tablet → 1-col mobile
+- Keyboard nav: Arrow keys in lightbox, Esc to close, Tab-accessible
+- Passes Core Web Vitals: LCP <2.5s, CLS <0.1
+
+DELIVERABLES:
+- Fully responsive site (mobile, tablet, desktop)
+- All 5 pages built and functional
+- Optimized images with fallbacks
+- Dark mode support
+- SEO setup (metadata, Open Graph, schema)
+- Production-ready, clean code with TypeScript
+- Contact form integrated
+
+TONE:
+- Craft this with luxury brand sensibility
+- Every interaction intentional, smooth, premium
+- The site itself should feel like a photography book come to life
+- Minimal explanation, maximum visual impact
+- Let the images breathe—whitespace is design
+
+BUILD THIS NOW.
+
+===== END PROMPT =====
+
+TIPS FOR USING THIS:
+
+1. If calling via API, wrap the above in a user message and pass to Claude Sonnet 4
+2. If using in chat, paste as-is and Claude will understand the scope
+3. For even faster turnaround, ask Claude to generate the full codebase in a single artifact (or multiple if needed)
+4. Provide Lekha's gallery images as URLs or base64 for initial gallery data
+5. Use this JSON structure for gallery data:
+
+{
+  "series": [
+    {
+      "id": "monsoon-studies",
+      "title": "Monsoon Studies",
+      "year": 2024,
+      "description": "...",
+      "images": [
+        {
+          "src": "/gallery/monsoon/01.jpg",
+          "alt": "...",
+          "width": 1200,
+          "height": 1600
+        }
+      ]
+    }
+  ]
+}
+
+6. Start with the gallery grid + lightbox first, then expand to series pages
+7. Test mobile thoroughly—masonry should be a pleasure on all devices
+
+Good luck! This brief is sharp enough to guide Sonnet through a premium build.
