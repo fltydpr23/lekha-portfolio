@@ -44,8 +44,15 @@ export default function Nav() {
         >
           <Link
             href="/"
-            className="text-caption tracking-[0.12em] uppercase text-black hover:opacity-60 transition-opacity duration-300 whitespace-nowrap"
-            style={{ fontSize: isMobile ? '11px' : '12px' }}
+            className="hover:opacity-60 transition-opacity duration-300 whitespace-nowrap"
+            style={{ 
+              fontFamily: "var(--font-cormorant)",
+              fontStyle: "italic",
+              fontSize: isMobile ? "17px" : "20px",
+              fontWeight: 400,
+              letterSpacing: "0.03em",
+              color: "#000000"
+            }}
             aria-label="Lekha Rathnam — Home"
           >
             Lekha Rathnam
