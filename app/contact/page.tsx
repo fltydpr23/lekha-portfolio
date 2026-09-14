@@ -49,9 +49,9 @@ export default function ContactPage() {
                 </a>
               </div>
               <div>
-                <p className="text-caption mb-1">Locations</p>
+                <p className="text-caption mb-1">Location</p>
                 <p className="font-inter font-light text-charcoal">
-                  New Delhi &amp; Pondicherry, India
+                  Bangalore, India
                 </p>
               </div>
             </div>

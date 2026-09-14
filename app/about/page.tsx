@@ -10,14 +10,10 @@ export const metadata = {
 const BIOGRAPHY = [
   `Lekha Rathnam is an editorial and fine art photographer based in India. Her work explores the intersections of landscape, ritual, and human presence, with a particular focus on the quality of light and surface in everyday spaces.`,
   `She has spent over a decade documenting the changing landscapes and cultural practices of the Indian subcontinent. Her approach is characterized by a commitment to available light, a suspect attitude towards nostalgia, and a preference for sustained attention over dramatic intervention.`,
-  `Her work has been published in Vogue India, National Geographic Traveller, and various independent arts publications. She divides her time between New Delhi and Pondicherry, returning frequently to the landscapes that continue to shape her practice.`,
+  `Her work has been published in Vogue India and various independent arts publications. She is based in Bangalore, returning frequently to the landscapes that continue to shape her practice.`,
 ];
 
-const EXHIBITIONS = [
-  { year: 2024, title: "Red Earth (Solo)", venue: "Alliance Française de Pondichéry" },
-  { year: 2023, title: "The Quiet Season (Group)", venue: "Kochi-Muziris Biennale Collateral" },
-  { year: 2022, title: "Surface Studies", venue: "Varanasi Arts Festival" },
-];
+const EXHIBITIONS: { year: number, title: string, venue: string }[] = [];
 
 export default function AboutPage() {
   return (
@@ -49,22 +45,24 @@ export default function AboutPage() {
             </div>
 
             {/* Exhibitions */}
-            <div className="pt-8 border-t border-beige-deep/40">
-              <p className="text-editorial mb-6">Exhibitions & Recognition</p>
-              <ul className="space-y-4" role="list">
-                {EXHIBITIONS.map((exh, i) => (
-                  <li key={i} className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-beige-deep/20 pb-4">
-                    <span className="font-fraunces font-light text-charcoal text-lg">
-                      {exh.title}
-                    </span>
-                    <div className="flex items-center gap-4 text-caption">
-                      <span>{exh.venue}</span>
-                      <span className="text-fog">{exh.year}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {EXHIBITIONS.length > 0 && (
+              <div className="pt-8 border-t border-beige-deep/40">
+                <p className="text-editorial mb-6">Exhibitions & Recognition</p>
+                <ul className="space-y-4" role="list">
+                  {EXHIBITIONS.map((exh, i) => (
+                    <li key={i} className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-beige-deep/20 pb-4">
+                      <span className="font-fraunces font-light text-charcoal text-lg">
+                        {exh.title}
+                      </span>
+                      <div className="flex items-center gap-4 text-caption">
+                        <span>{exh.venue}</span>
+                        <span className="text-fog">{exh.year}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           {/* Right: Image */}
