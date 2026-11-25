@@ -33,7 +33,7 @@ export default function EditorialStatement() {
         <div className="lg:col-span-9">
           <h2
             id="statement-heading"
-            className="font-fraunces text-black leading-[1.1] tracking-tight"
+            className="font-cormorant font-light text-black leading-[1.1] tracking-tight"
             style={{ fontSize: "clamp(2.5rem, 5vw, 5rem)" }}
           >
             {STATEMENT}

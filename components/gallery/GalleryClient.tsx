@@ -30,7 +30,7 @@ export default function GalleryClient({ works }: GalleryClientProps) {
   return (
     <div className="space-y-12">
       <div className="flex justify-between items-center flex-wrap gap-6">
-        <h1 className="font-fraunces font-light text-4xl text-charcoal">
+        <h1 className="font-cormorant font-light text-4xl text-black">
           Works
         </h1>
         <SeriesFilter

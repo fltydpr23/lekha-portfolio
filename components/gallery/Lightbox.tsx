@@ -12,15 +12,46 @@ interface LightboxProps {
   onClose: () => void;
 }
 
-export default function Lightbox({ works, initialWork, onClose }: LightboxProps) {
+export default function Lightbox({
+  works,
+  initialWork,
+  onClose,
+}: LightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(
-    works.findIndex((w) => w.slug === initialWork.slug)
+    Math.max(
+      0,
+      works.findIndex((w) => w.slug === initialWork.slug)
+    )
   );
   const [imageIndex, setImageIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
   const currentWork = works[currentIndex];
-  const currentImage = currentWork?.images[imageIndex] ?? currentWork?.coverImage;
+  const currentImage =
+    currentWork?.images[imageIndex] ?? currentWork?.coverImage;
+
+  const goNext = useCallback(() => {
+    if (!works.length) return;
+    setDirection(1);
+    if (imageIndex < (currentWork?.images.length ?? 1) - 1) {
+      setImageIndex((i) => i + 1);
+    } else {
+      setCurrentIndex((i) => (i + 1) % works.length);
+      setImageIndex(0);
+    }
+  }, [imageIndex, currentWork, works.length]);
+
+  const goPrev = useCallback(() => {
+    if (!works.length) return;
+    setDirection(-1);
+    if (imageIndex > 0) {
+      setImageIndex((i) => i - 1);
+    } else {
+      const prevWork = works[(currentIndex - 1 + works.length) % works.length];
+      setCurrentIndex((i) => (i - 1 + works.length) % works.length);
+      setImageIndex((prevWork?.images.length ?? 1) - 1);
+    }
+  }, [currentIndex, imageIndex, works]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -35,28 +66,7 @@ export default function Lightbox({ works, initialWork, onClose }: LightboxProps)
       window.removeEventListener("keydown", onKey);
       document.body.classList.remove("scroll-locked");
     };
-  }, [currentIndex, imageIndex]);
-
-  const goNext = useCallback(() => {
-    setDirection(1);
-    if (imageIndex < (currentWork?.images.length ?? 1) - 1) {
-      setImageIndex((i) => i + 1);
-    } else {
-      setCurrentIndex((i) => (i + 1) % works.length);
-      setImageIndex(0);
-    }
-  }, [currentIndex, imageIndex, currentWork, works.length]);
-
-  const goPrev = useCallback(() => {
-    setDirection(-1);
-    if (imageIndex > 0) {
-      setImageIndex((i) => i - 1);
-    } else {
-      const prevWork = works[(currentIndex - 1 + works.length) % works.length];
-      setCurrentIndex((i) => (i - 1 + works.length) % works.length);
-      setImageIndex((prevWork?.images.length ?? 1) - 1);
-    }
-  }, [currentIndex, imageIndex, works]);
+  }, [onClose, goNext, goPrev]);
 
   const imageVariants = {
     enter: (dir: number) => ({
@@ -87,7 +97,7 @@ export default function Lightbox({ works, initialWork, onClose }: LightboxProps)
       >
         {/* Close */}
         <button
-          className="absolute top-6 right-8 text-editorial text-linen/60 hover:text-linen transition-colors duration-250 z-10"
+          className="absolute top-6 right-8 text-editorial !text-white/60 hover:!text-white transition-colors duration-200 z-10"
           onClick={onClose}
           aria-label="Close lightbox (Esc)"
         >
@@ -95,7 +105,7 @@ export default function Lightbox({ works, initialWork, onClose }: LightboxProps)
         </button>
 
         {/* Counter */}
-        <div className="absolute top-6 left-8 text-caption text-linen/40 z-10">
+        <div className="absolute top-6 left-8 text-caption !text-white/40 z-10">
           {imageIndex + 1} / {currentWork?.images.length ?? 1}
         </div>
 
@@ -129,14 +139,14 @@ export default function Lightbox({ works, initialWork, onClose }: LightboxProps)
 
         {/* Prev / Next */}
         <button
-          className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 text-linen/40 hover:text-linen transition-colors duration-250 p-4 text-2xl font-light"
+          className="absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors duration-200 p-4 text-2xl font-light"
           onClick={goPrev}
           aria-label="Previous image"
         >
           ←
         </button>
         <button
-          className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 text-linen/40 hover:text-linen transition-colors duration-250 p-4 text-2xl font-light"
+          className="absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors duration-200 p-4 text-2xl font-light"
           onClick={goNext}
           aria-label="Next image"
         >
@@ -144,27 +154,31 @@ export default function Lightbox({ works, initialWork, onClose }: LightboxProps)
         </button>
 
         {/* Metadata panel — bottom */}
-        <div className="absolute bottom-0 left-0 right-0 px-8 lg:px-12 pb-8 pt-12 bg-gradient-to-t from-ink/80 to-transparent">
+        <div className="absolute bottom-0 left-0 right-0 px-8 lg:px-12 pb-8 pt-12 bg-gradient-to-t from-black/80 to-transparent">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 max-w-5xl mx-auto">
             <div>
-              <p className="text-caption text-linen/40 mb-1">
+              <p className="text-caption !text-white/45 mb-1">
                 {currentWork?.year} · {currentWork?.location}
               </p>
-              <h2 className="font-fraunces font-light text-xl text-linen mb-1">
+              <h2 className="font-cormorant font-light text-2xl text-white mb-1">
                 {currentWork?.title}
               </h2>
               {currentImage?.caption && (
-                <p className="text-caption text-linen/50">{currentImage.caption}</p>
+                <p className="text-caption !text-white/60">
+                  {currentImage.caption}
+                </p>
               )}
               {currentImage?.cameraInfo && (
-                <p className="text-caption text-linen/30 mt-1">{currentImage.cameraInfo}</p>
+                <p className="text-caption !text-white/35 mt-1">
+                  {currentImage.cameraInfo}
+                </p>
               )}
             </div>
 
             <Link
               href={`/work/${currentWork?.slug}`}
               onClick={onClose}
-              className="nav-link text-linen/60 hover:text-linen shrink-0"
+              className="nav-link !text-white/70 hover:!text-white shrink-0"
             >
               View full series →
             </Link>

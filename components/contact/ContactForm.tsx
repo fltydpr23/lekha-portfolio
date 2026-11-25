@@ -1,186 +1,207 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { motion, AnimatePresence } from "framer-motion";
 import type { ContactFormData, ContactInquiryType } from "@/types";
 
 const INQUIRY_TYPES: { value: ContactInquiryType; label: string }[] = [
-  { value: "editorial", label: "Editorial Commission" },
-  { value: "commercial", label: "Commercial Work" },
-  { value: "exhibition", label: "Exhibition / Print" },
-  { value: "licensing", label: "Image Licensing" },
-  { value: "general", label: "General Inquiry" },
+  { value: "editorial", label: "Editorial" },
+  { value: "commercial", label: "Commercial" },
+  { value: "exhibition", label: "Exhibition" },
+  { value: "licensing", label: "Licensing" },
+  { value: "general", label: "General" },
 ];
 
+const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
+const stagger = (i: number) => ({ "--i": i }) as React.CSSProperties;
+
 export default function ContactForm() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSent, setIsSent] = useState(false);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm<ContactFormData>();
+    formState: { errors, isSubmitting },
+  } = useForm<ContactFormData>({
+    defaultValues: { name: "", email: "", inquiryType: "editorial", message: "" },
+  });
+
+  // Move focus to the confirmation heading so the change is announced.
+  useEffect(() => {
+    if (isSent) titleRef.current?.focus();
+  }, [isSent]);
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Form data:", data);
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    // Mockup submission — replace with a real endpoint later.
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    console.log("Inquiry:", data);
     reset();
+    setIsSent(true);
   };
 
+  if (isSent) {
+    return (
+      <div role="status">
+        <p className="label reveal" style={stagger(0)}>
+          Received
+        </p>
+        <h1
+          ref={titleRef}
+          tabIndex={-1}
+          className="contact__title reveal"
+          style={stagger(1)}
+        >
+          Thank you.
+        </h1>
+        <p className="contact__lede reveal" style={stagger(2)}>
+          Your inquiry has been sent. Expect a personal reply within 48 hours.
+        </p>
+        <div className="sent__actions reveal" style={stagger(3)}>
+          <button
+            type="button"
+            className="link link--quiet label"
+            onClick={() => setIsSent(false)}
+          >
+            Send another inquiry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative">
-      <AnimatePresence mode="wait">
-        {!isSubmitted ? (
-          <motion.form
-            key="form"
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-8"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            aria-label="Contact form"
-          >
-            {/* Name */}
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-caption block">
-                Name *
-              </label>
-              <input
-                id="name"
-                type="text"
-                className="form-field"
-                placeholder="Your name"
-                {...register("name", { required: "Name is required" })}
-                aria-invalid={errors.name ? "true" : "false"}
-              />
-              {errors.name && (
-                <p className="text-2xs text-burgundy mt-1" role="alert">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
+    <>
+      <header>
+        <p className="label reveal" style={stagger(0)}>
+          Infos
+        </p>
+        <h1 className="contact__title reveal" style={stagger(1)}>
+          Tell me about your project.
+        </h1>
+        <p className="contact__lede reveal" style={stagger(2)}>
+          For editorial commissions, commercial work, exhibitions and image
+          licensing.
+        </p>
+      </header>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-caption block">
-                Email *
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="form-field"
-                placeholder="your.email@example.com"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email address",
-                  },
-                })}
-                aria-invalid={errors.email ? "true" : "false"}
-              />
-              {errors.email && (
-                <p className="text-2xs text-burgundy mt-1" role="alert">
-                  {errors.email.message}
-                </p>
-              )}
-            </div>
+      <form
+        className="form"
+        onSubmit={handleSubmit(onSubmit)}
+        aria-label="Inquiry form"
+        noValidate
+      >
+        <div className="form__row reveal" style={stagger(3)}>
+          <div className="field">
+            <label htmlFor="name" className="label">
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              autoComplete="name"
+              className="field__control"
+              aria-invalid={errors.name ? "true" : "false"}
+              aria-describedby={errors.name ? "name-error" : undefined}
+              {...register("name", { required: "Enter your name." })}
+            />
+            {errors.name && (
+              <p id="name-error" className="field__error">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
 
-            {/* Inquiry Type */}
-            <div className="space-y-2">
-              <label htmlFor="inquiryType" className="text-caption block">
-                Inquiry Type *
-              </label>
-              <select
-                id="inquiryType"
-                className="form-field appearance-none"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'><path d='m1 1 4 4 4-4' stroke='%238A8580' stroke-width='1'/></svg>")`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "right center",
-                }}
-                {...register("inquiryType", { required: "Please select an inquiry type" })}
-                aria-invalid={errors.inquiryType ? "true" : "false"}
-              >
-                <option value="">Select an option</option>
-                {INQUIRY_TYPES.map((type) => (
-                  <option key={type.value} value={type.value}>
-                    {type.label}
-                  </option>
-                ))}
-              </select>
-              {errors.inquiryType && (
-                <p className="text-2xs text-burgundy mt-1" role="alert">
-                  {errors.inquiryType.message}
-                </p>
-              )}
-            </div>
+          <div className="field">
+            <label htmlFor="email" className="label">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="name@example.com"
+              className="field__control"
+              aria-invalid={errors.email ? "true" : "false"}
+              aria-describedby={errors.email ? "email-error" : undefined}
+              {...register("email", {
+                required: "Enter your email address.",
+                pattern: {
+                  value: EMAIL_PATTERN,
+                  message: "Enter an email address like name@example.com.",
+                },
+              })}
+            />
+            {errors.email && (
+              <p id="email-error" className="field__error">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+        </div>
 
-            {/* Message */}
-            <div className="space-y-2">
-              <label htmlFor="message" className="text-caption block">
-                Message *
-              </label>
-              <textarea
-                id="message"
-                className="form-field min-h-[120px] resize-none"
-                placeholder="Tell me about your project..."
-                {...register("message", { required: "Message is required" })}
-                aria-invalid={errors.message ? "true" : "false"}
-              />
-              {errors.message && (
-                <p className="text-2xs text-burgundy mt-1" role="alert">
-                  {errors.message.message}
-                </p>
-              )}
-            </div>
-
-            {/* Submit */}
-            <div className="pt-4">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="nav-link text-charcoal flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
-                <span
-                  className="block h-px bg-charcoal transition-all duration-350"
-                  style={{ width: isSubmitting ? "0px" : "32px" }}
+        <fieldset className="choices reveal" style={stagger(4)}>
+          <legend className="label">Inquiry type</legend>
+          <div className="choices__list">
+            {INQUIRY_TYPES.map((type) => (
+              <label key={type.value} className="choice">
+                <input
+                  type="radio"
+                  value={type.value}
+                  {...register("inquiryType")}
                 />
-              </button>
-            </div>
-          </motion.form>
-        ) : (
-          <motion.div
-            key="success"
-            className="py-12 text-center lg:text-left"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            role="status"
+                <span className="choice__mark" aria-hidden="true" />
+                <span className="choice__text">{type.label}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className="field reveal" style={stagger(5)}>
+          <label htmlFor="message" className="label">
+            Message
+          </label>
+          <textarea
+            id="message"
+            rows={5}
+            className="field__control"
+            placeholder="Scope, dates, location or print details"
+            aria-invalid={errors.message ? "true" : "false"}
+            aria-describedby={errors.message ? "message-error" : undefined}
+            {...register("message", { required: "Enter a message." })}
+          />
+          {errors.message && (
+            <p id="message-error" className="field__error">
+              {errors.message.message}
+            </p>
+          )}
+        </div>
+
+        <div className="reveal" style={stagger(6)}>
+          <button
+            type="submit"
+            className="submit"
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+            data-cursor="image"
           >
-            <p className="font-fraunces font-light text-2xl text-charcoal mb-3">
-              Thank you.
-            </p>
-            <p className="text-editorial text-ash mb-8">
-              Your message has been received. I will reply shortly.
-            </p>
-            <button
-              onClick={() => setIsSubmitted(false)}
-              className="text-caption text-fog hover:text-ash transition-colors duration-250"
+            <span>{isSubmitting ? "Sending…" : "Send inquiry"}</span>
+            <svg
+              className="submit__arrow"
+              viewBox="0 0 40 10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1"
+              aria-hidden="true"
             >
-              ← Send another message
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+              <path d="M0 5h39M35 1l4 4-4 4" />
+            </svg>
+          </button>
+        </div>
+      </form>
+    </>
   );
 }

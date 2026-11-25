@@ -316,7 +316,7 @@ export default function Universe3D() {
             duration: 0.3, 
             ease: "back.out(1.5)" 
           });
-          document.body.style.cursor = "pointer";
+          document.body.dataset.cursor = "image";
 
           particles.forEach((p) => {
             if (p !== hoveredMesh) {
@@ -334,7 +334,7 @@ export default function Universe3D() {
             duration: 0.3 
           });
           hoveredMesh = null;
-          document.body.style.cursor = "auto";
+          delete document.body.dataset.cursor;
 
           particles.forEach((p) => {
             const mat = p.material as THREE.ShaderMaterial;
@@ -362,7 +362,7 @@ export default function Universe3D() {
       window.removeEventListener("click", onClick);
       window.removeEventListener("dblclick", onDoubleClick);
       window.removeEventListener("resize", handleResize);
-      document.body.style.cursor = "auto";
+      delete document.body.dataset.cursor;
       cancelAnimationFrame(animationFrameId);
       
       if (mount.contains(renderer.domElement)) {

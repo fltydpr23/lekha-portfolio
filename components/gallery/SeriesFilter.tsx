@@ -10,7 +10,11 @@ interface SeriesFilterProps {
   onChange: (tag: string) => void;
 }
 
-export default function SeriesFilter({ tags, active, onChange }: SeriesFilterProps) {
+export default function SeriesFilter({
+  tags,
+  active,
+  onChange,
+}: SeriesFilterProps) {
   const allTags = [ALL_TAG, ...tags];
 
   return (
@@ -26,8 +30,8 @@ export default function SeriesFilter({ tags, active, onChange }: SeriesFilterPro
             key={tag}
             onClick={() => onChange(tag)}
             className={`
-              relative text-editorial transition-colors duration-250
-              ${isActive ? "text-charcoal" : "text-fog hover:text-ash"}
+              relative text-editorial transition-colors duration-200
+              ${isActive ? "!text-black" : "!text-black/40 hover:!text-black/70"}
             `}
             aria-pressed={isActive}
             type="button"
@@ -38,7 +42,7 @@ export default function SeriesFilter({ tags, active, onChange }: SeriesFilterPro
             {isActive && (
               <motion.span
                 layoutId="filter-underline"
-                className="absolute -bottom-1 left-0 right-0 h-px bg-terracotta"
+                className="absolute -bottom-1 left-0 right-0 h-px bg-black"
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               />
             )}

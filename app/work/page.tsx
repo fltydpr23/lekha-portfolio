@@ -11,7 +11,7 @@ export default function WorkPage() {
   const works = getAllWorks();
 
   return (
-    <main className="min-h-screen flex flex-col bg-linen">
+    <main className="min-h-screen flex flex-col bg-white text-black">
       {/* Spacer for fixed nav */}
       <div style={{ height: "var(--nav-height)" }} />
 

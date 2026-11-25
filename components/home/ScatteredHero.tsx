@@ -136,6 +136,7 @@ function FloatingImage({
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function ScatteredHero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pickWork = (index: number) => works[index % Math.max(works.length, 1)];
 
   // Scroll tracking for the 300vh sticky section
   const { scrollYProgress } = useScroll({
@@ -255,6 +256,7 @@ export default function ScatteredHero() {
         </div>
 
         {/* ── IMAGES CONTAINER (z-10) ── */}
+        {works.length > 0 && (
         <div className="absolute inset-0 z-10 pointer-events-none">
           
           {/* Image 1 */}
@@ -271,7 +273,7 @@ export default function ScatteredHero() {
               height: coords.img1.h 
             }}
           >
-            <FloatingImage src={works[0].coverImage.src} alt={works[0].title} href={`/work/${works[0].slug}`} sizes={coords.img1.w} depth={0.4} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
+            <FloatingImage src={pickWork(0).coverImage.src} alt={pickWork(0).title} href={`/work/${pickWork(0).slug}`} sizes={coords.img1.w} depth={0.4} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
           </motion.div>
 
           {/* Image 2 */}
@@ -288,7 +290,7 @@ export default function ScatteredHero() {
               height: coords.img2.h 
             }}
           >
-            <FloatingImage src={works[1].coverImage.src} alt={works[1].title} href={`/work/${works[1].slug}`} sizes={coords.img2.w} depth={0.15} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
+            <FloatingImage src={pickWork(1).coverImage.src} alt={pickWork(1).title} href={`/work/${pickWork(1).slug}`} sizes={coords.img2.w} depth={0.15} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
           </motion.div>
 
           {/* Image 3 */}
@@ -305,7 +307,7 @@ export default function ScatteredHero() {
               height: coords.img3.h 
             }}
           >
-            <FloatingImage src={works[2].coverImage.src} alt={works[2].title} href={`/work/${works[2].slug}`} sizes={coords.img3.w} depth={0.35} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
+            <FloatingImage src={pickWork(2).coverImage.src} alt={pickWork(2).title} href={`/work/${pickWork(2).slug}`} sizes={coords.img3.w} depth={0.35} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
           </motion.div>
 
           {/* Image 4 */}
@@ -322,9 +324,9 @@ export default function ScatteredHero() {
               height: coords.img4.h 
             }}
           >
-            <FloatingImage src={works[3].coverImage.src} alt={works[3].title} href={`/work/${works[3].slug}`} sizes={coords.img4.w} depth={0.5} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
+            <FloatingImage src={pickWork(3).coverImage.src} alt={pickWork(3).title} href={`/work/${pickWork(3).slug}`} sizes={coords.img4.w} depth={0.5} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
             <motion.p className="hidden md:block text-caption mt-4 text-center tracking-widest absolute -bottom-8 left-0 w-full" style={{ opacity: smoothProgress }}>
-              {works[3].title.toUpperCase()}
+              {pickWork(3).title.toUpperCase()}
             </motion.p>
           </motion.div>
 
@@ -342,7 +344,7 @@ export default function ScatteredHero() {
               height: coords.img5.h 
             }}
           >
-            <FloatingImage src={works[4].coverImage.src} alt={works[4].title} href={`/work/${works[4].slug}`} sizes={coords.img5.w} depth={0.25} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
+            <FloatingImage src={pickWork(4).coverImage.src} alt={pickWork(4).title} href={`/work/${pickWork(4).slug}`} sizes={coords.img5.w} depth={0.25} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltB} />
           </motion.div>
 
           {/* Image 6 */}
@@ -359,10 +361,11 @@ export default function ScatteredHero() {
               height: coords.img6.h 
             }}
           >
-            <FloatingImage src={works[5].coverImage.src} alt={works[5].title} href={`/work/${works[5].slug}`} sizes={coords.img6.w} depth={0.3} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
+            <FloatingImage src={pickWork(5).coverImage.src} alt={pickWork(5).title} href={`/work/${pickWork(5).slug}`} sizes={coords.img6.w} depth={0.3} globalMouseX={globalMouseX} globalMouseY={globalMouseY} scrollRotate={tiltA} />
           </motion.div>
 
         </div>
+        )}
       </div>
     </section>
   );

@@ -15,7 +15,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="font-playfair text-black leading-none mx-auto whitespace-nowrap"
+          className="font-cormorant font-light text-black leading-none mx-auto whitespace-nowrap"
           style={{ 
             fontSize: "158px", 
             letterSpacing: "-0.0180em" 

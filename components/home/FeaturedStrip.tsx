@@ -14,7 +14,7 @@ export default function FeaturedStrip() {
     <section ref={ref} className="py-32 px-8 lg:px-12 bg-white">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex justify-between items-end mb-8">
-          <span className="text-caption text-fog">INDEX [ {works.length} ]</span>
+          <span className="text-caption text-black/40">INDEX [ {works.length} ]</span>
           <Link href="/work" className="text-editorial border-b border-black hover:opacity-50 transition-opacity">
             ALL PROJECTS
           </Link>
@@ -30,12 +30,12 @@ export default function FeaturedStrip() {
             >
               <Link 
                 href={`/work/${work.slug}`}
-                className="group flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-black/20 hover:bg-gray-50 transition-colors px-4 -mx-4"
+                className="group flex flex-col md:flex-row md:items-center justify-between py-6 border-b border-black/20 hover:bg-black/[0.03] transition-colors px-4 -mx-4"
               >
-                <h3 className="font-fraunces text-2xl text-black group-hover:italic transition-all">
+                <h3 className="font-cormorant font-light text-2xl text-black group-hover:italic transition-all">
                   {work.title}
                 </h3>
-                <div className="flex gap-8 mt-2 md:mt-0 text-caption text-fog">
+                <div className="flex gap-8 mt-2 md:mt-0 text-caption text-black/40">
                   <span className="w-24">{work.year}</span>
                   <span className="w-32">{work.location.split(',')[0]}</span>
                 </div>

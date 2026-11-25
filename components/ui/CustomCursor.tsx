@@ -18,14 +18,21 @@ export default function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    const checkHover = (target?: EventTarget | null) => {
+      const el = target instanceof HTMLElement ? target : null;
+      const domHover = !!el?.closest("[data-cursor='image']");
+      const canvasHover = document.body.dataset.cursor === "image";
+      setIsHovering(domHover || canvasHover);
+    };
+
     const move = (e: MouseEvent) => {
       rawX.set(e.clientX);
       rawY.set(e.clientY);
+      checkHover(e.target);
     };
 
     const over = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      setIsHovering(!!el.closest("[data-cursor='image']"));
+      checkHover(e.target);
     };
 
     window.addEventListener("mousemove", move);
