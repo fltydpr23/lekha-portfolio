@@ -381,11 +381,6 @@ export default function Universe3D() {
   return (
     <div className="w-full h-screen bg-[#e2e2e0] absolute top-0 left-0 z-0 overflow-hidden">
       <div ref={mountRef} className="w-full h-full" />
-      
-      <div className="absolute bottom-10 left-10 text-black z-10 pointer-events-none">
-        <h1 className="text-4xl md:text-6xl font-light tracking-tighter">The Universe.</h1>
-        <p className="mt-2 text-black/60">Scroll to explore. Hover to focus. Click to fly.</p>
-      </div>
     </div>
   );
 }
